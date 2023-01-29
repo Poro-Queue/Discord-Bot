@@ -1,0 +1,26 @@
+{
+  "name": "discord-bot",
+  "description": "",
+  "version": "1.0.0",
+  "main": "./src/index.js",
+  "dependencies": {
+    "@discordjs/rest": "^1.5.0",
+    "discord-api-types": "^0.37.30",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3"
+  },
+  "scripts": {
+    "test": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Poro-Queue/Discord-Bot.git"
+  },
+  "keywords": [],
+  "author": "Curvu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Poro-Queue/Discord-Bot/issues"
+  },
+  "homepage": "https://github.com/Poro-Queue/Discord-Bot#readme"
+}
