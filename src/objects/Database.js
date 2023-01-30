@@ -61,12 +61,17 @@ class Database {
 
     /**
      * Print all the players in the database
+     * @returns {Promise} - A promise that resolves to an array of players
      */
     async getPlayers() {
         return new Promise((resolve, reject) => {
             this.connection.query('SELECT * FROM playerTable', (error, results) => {
                 if (error) reject(error);
-                resolve(results);
+                const players = [];
+                results.forEach((result) => {
+                    players.push(new Player(result.name, result.team, result.wins, result.losses, result.games));
+                });
+                resolve(players);
             });
         });
     }
