@@ -13,11 +13,11 @@ module.exports = {
         await interaction.reply("Getting players...");
         const players = await db.getPlayers();
 
-        const playersMessage = players.map(player => {
-            let p = new Player(player.name, player.team, player.wins, player.losses, player.games);
-            return `${p.getName()} from ${p.getTeam()} has ${p.getGames()} games. Win rate: ${p.getWinRate()}%`;
-        }).join("\n");
-
+        let playersMessage = "Players:\n";
+        players.forEach((player) => {
+            playersMessage += `- ${player.getTeam()} ${player.getName()}\n`;
+        });
+        
         await interaction.editReply(playersMessage);
     }
 }
