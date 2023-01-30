@@ -1,3 +1,7 @@
+const Database = require('../objects/Database');
+const db = new Database();
+db.connect();
+
 module.exports = {
     name: 'ready',
     once: true,
