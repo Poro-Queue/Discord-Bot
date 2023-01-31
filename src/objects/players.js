@@ -1,2 +1,1 @@
-const players = [{"name":"Bo","team":"VIT","wins":0,"losses":0,"games":0},{"name":"Caps","team":"G2","wins":0,"losses":0,"games":0},{"name":"Jankos","team":"Heretics","wins":0,"losses":0,"games":0},{"name":"Neon","team":"VIT","wins":0,"losses":0,"games":0},{"name":"Yike","team":"G2","wins":0,"losses":0,"games":0}];
-module.exports = players;
+module.exports = [{"name":"Bo","team":"VIT","wins":0,"losses":0,"games":0},{"name":"Caps","team":"G2","wins":0,"losses":0,"games":0},{"name":"Jankos","team":"Heretics","wins":0,"losses":0,"games":0},{"name":"Neon","team":"VIT","wins":0,"losses":0,"games":0},{"name":"Yike","team":"G2","wins":0,"losses":0,"games":0}]

@@ -1,2 +1,1 @@
-const queue = [];
-module.exports = queue;
+module.exports = [{"name":"Jankos","team":"Heretics","wins":0,"losses":0,"games":0}]
