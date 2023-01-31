@@ -2,6 +2,8 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const Player = require('../../objects/Player.js');
 
+const players = require('../../objects/vars.js').players;
+
 const Database = require('../../objects/Database.js');
 const db = new Database();
 
@@ -28,6 +30,14 @@ module.exports = {
 
         // Add the player to the database
         db.addPlayer(player);
+        
+        // Update the players file
+        players.push(player);
+        const fs = require('fs');
+        fs.writeFile('./src/objects/vars.js', `const players = ${JSON.stringify(players)};\nconst queue = [];\n\nconst arrays = { players, queue }\n\nmodule.exports = arrays;`, (error) => {
+                if (error) throw error;
+            }
+        );
 
         // Send a message to the user
         await interaction.reply(player.toString());
