@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const Player = require('../../objects/Player.js');
-const players = require('../../objects/players.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,6 +10,8 @@ module.exports = {
         await interaction.reply("Getting players...");
 
         let playersMessage = "Players:\n";
+        
+        const players = require('../../objects/players.js');
         players.forEach((player) => {
             let p = new Player(player.name, player.team, player.wins, player.losses, player.games);
             playersMessage += `- ${p.getTeam()} ${p.getName()}\n`;
