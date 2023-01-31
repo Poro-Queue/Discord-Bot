@@ -83,6 +83,10 @@ class Database {
         return new Promise((resolve, reject) => {
             this.connection.query(`SELECT * FROM playerTable WHERE name = '${name}'`, (error, results) => {
                 if (error) reject(error);
+                if (results.length === 0) {
+                    resolve(null);
+                    return;
+                }
                 results = results[0];
                 resolve(new Player(results.name, results.team, results.wins, results.losses, results.games));
             });
