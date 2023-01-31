@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const Database = require('../../objects/Database.js');
 const db = new Database();
 
-const players = require('../../objects/vars.js').players;
+const players = require('../../objects/players.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -35,7 +35,6 @@ module.exports = {
 
         // get the player from the database
         let player = await db.searchPlayer(name);
-        console.log(player.toString());
         if (player === null) {
             interaction.reply('Player not found');
             return;
@@ -62,7 +61,7 @@ module.exports = {
         });
 
         const fs = require('fs');
-        fs.writeFile('./src/objects/vars.js', `const players = ${JSON.stringify(players)};\nconst queue = [];\n\nconst arrays = { players, queue }\n\nmodule.exports = arrays;`, (error) => {
+        fs.writeFile('./src/objects/players.js', `const players = ${JSON.stringify(players)};\nmodule.exports = players;`, (error) => {
                 if (error) throw error;
             }
         );

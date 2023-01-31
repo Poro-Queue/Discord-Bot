@@ -13,7 +13,7 @@ module.exports = {
 
         // Update the players file
         const fs = require('fs');
-        fs.writeFile('./src/objects/vars.js', `const players = ${JSON.stringify(players)};\nconst queue = [];\n\nconst arrays = { players, queue }\n\nmodule.exports = arrays;`, (error) => {
+        fs.writeFile('./src/objects/players.js', `const players = ${JSON.stringify(players)};\nmodule.exports = players;`, (error) => {
                 if (error) throw error;
             }
         );

@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const Player = require('../../objects/Player.js');
 
-const players = require('../../objects/vars.js').players;
+const players = require('../../objects/players.js');
 
 const Database = require('../../objects/Database.js');
 const db = new Database();
@@ -34,7 +34,7 @@ module.exports = {
         // Update the players file
         players.push(player);
         const fs = require('fs');
-        fs.writeFile('./src/objects/vars.js', `const players = ${JSON.stringify(players)};\nconst queue = [];\n\nconst arrays = { players, queue }\n\nmodule.exports = arrays;`, (error) => {
+        fs.writeFile('./src/objects/players.js', `const players = ${JSON.stringify(players)};\nconst queue = [];\nmodule.exports = players;`, (error) => {
                 if (error) throw error;
             }
         );

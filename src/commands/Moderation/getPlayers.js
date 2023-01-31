@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const Player = require('../../objects/Player.js');
-const players = require('../../objects/vars.js').players;
+const players = require('../../objects/players.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('players')
-    .setDescription('Get the players in the database'),
+    .setDescription('Get all registered players'),
     async execute(interaction, client) {
         await interaction.reply("Getting players...");
 
