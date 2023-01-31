@@ -79,7 +79,7 @@ class Database {
     /**
      * Search the player by name in the database
      */
-    async searchPlayer(name) {
+    async getPlayer(name) {
         return new Promise((resolve, reject) => {
             this.connection.query(`SELECT * FROM playerTable WHERE name = '${name}'`, (error, results) => {
                 if (error) reject(error);
