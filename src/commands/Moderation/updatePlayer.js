@@ -3,6 +3,8 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const Database = require('../../objects/Database.js');
 const db = new Database();
 
+const players = require('../../objects/vars.js').players;
+
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('update')
@@ -51,6 +53,19 @@ module.exports = {
         console.log(player.toString()); // works!!
 
         db.updatePlayer(player, name); // Update the player in the database
+
+        // Update the players file
+        players.forEach((p, index) => {
+            if (p.name === name) {
+                players[index] = player;
+            }
+        });
+
+        const fs = require('fs');
+        fs.writeFile('./src/objects/vars.js', `const players = ${JSON.stringify(players)};\nconst queue = [];\n\nconst arrays = { players, queue }\n\nmodule.exports = arrays;`, (error) => {
+                if (error) throw error;
+            }
+        );
 
         interaction.reply('Player updated ' + player.getName());
     }
