@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
+const queue = require('../../objects/queue.js')
+
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('queue')
