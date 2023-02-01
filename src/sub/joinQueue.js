@@ -1,26 +1,24 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
-const Database = require('../../objects/Database.js');
-const db = new Database();
-
 module.exports = {
-    data: new SlashCommandBuilder()
-    .setName('join_queue')
-    .setDescription('Join the queue for a game'),
     async execute(interaction, client) {
         // get the guild display name of the user
         const userId = interaction.user.id;
         const username = interaction.guild.members.cache.get(userId).displayName;
 
-        const player = await db.getPlayer(username);
-        console.log(player);
+        // check if player is registered
 
+        const players = require('../objects/players.js');
+        let player = null;
+
+        players.forEach((p) => {
+            if (p.name === username) player = p;
+        });
+        
         if (player == null) {
             await interaction.reply({ content: `Please register yourself with /register`, ephemeral: true });
             return;
         }
 
-        const queue = require('../../objects/queue.js');
+        const queue = require('../objects/queue.js');
         // check if the player is already in the queue
         let isInQueue = false;
         queue.forEach((p) => {
@@ -38,5 +36,7 @@ module.exports = {
         fs.writeFileSync('./src/objects/queue.js', `module.exports = ${JSON.stringify(queue)}`);
 
         await interaction.reply({ content: `You have joined the queue`, ephemeral: true });
+
+        // TODO: now that the one more player has joined the queue, check if there are enough players to start a game
     }
 }
