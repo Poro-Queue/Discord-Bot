@@ -7,7 +7,7 @@ const db = new Database();
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('new')
+    .setName('new_player')
     .setDescription('Create a new player')
     .addStringOption(option =>
         option.setName('name')
@@ -15,17 +15,32 @@ module.exports = {
         .setRequired(true)
     )
     .addStringOption(option =>
+        option.setName('role')
+        .setDescription('The role of the player')
+        .setRequired(true)
+    )
+    .addStringOption(option =>
         option.setName('team')
         .setDescription('The team of the player')
-        .setRequired(true)
+        .setRequired(false)
+    )
+    .addStringOption(option =>
+        option.setName('ign')
+        .setDescription('The in-game name of the player')
+        .setRequired(false)
     ),
     async execute(interaction, client) {
         const name = interaction.options.getString('name');
         const team = interaction.options.getString('team');
+        const role = interaction.options.getString('role');
+        const ign = interaction.options.getString('ign');
 
-        // Create a new player with the provided name
-        const player = new Player(name, team);
-
+        let player;
+        if (ign === null && team === null) player = new Player(name, role=role); 
+        else if (ign === null) player = new Player(name, team, role);
+        else if (team === null) player = new Player(name, role=role, ign=ign);
+        else player = new Player(name, team, role, ign);
+        
         // Add the player to the database
         db.addPlayer(player);
         

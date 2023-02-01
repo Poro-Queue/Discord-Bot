@@ -13,10 +13,14 @@ module.exports = {
         
         const players = require('../../objects/players.js');
         players.forEach((player) => {
-            let p = new Player(player.name, player.team, player.wins, player.losses, player.games);
+            let p = new Player(player.name, player.team, player.role, player.ign, player.wins, player.losses, player.games);
             playersMessage += `- ${p.getTeam()} ${p.getName()}\n`;
         });
         
+        if (players.length == 0) {
+            playersMessage = "There are no players registered";
+        }
+
         await interaction.editReply(playersMessage);
     }
 }

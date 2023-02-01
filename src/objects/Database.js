@@ -30,6 +30,8 @@ class Database {
         const query = `CREATE TABLE IF NOT EXISTS playerTable (
             name VARCHAR(255) NOT NULL PRIMARY KEY,
             team VARCHAR(255) NOT NULL,
+            role VARCHAR(255) NOT NULL,
+            ign VARCHAR(255) NOT NULL,
             wins INT NOT NULL,
             losses INT NOT NULL,
             games INT NOT NULL
@@ -69,7 +71,7 @@ class Database {
                 if (error) reject(error);
                 const players = [];
                 results.forEach((result) => {
-                    players.push(new Player(result.name, result.team, result.wins, result.losses, result.games));
+                    players.push(new Player(result.name, result.team, result.role, result.ign, result.wins, result.losses, result.games));
                 });
                 resolve(players);
             });
@@ -87,8 +89,8 @@ class Database {
                     resolve(null);
                     return;
                 }
-                results = results[0];
-                resolve(new Player(results.name, results.team, results.wins, results.losses, results.games));
+                let result = results[0];
+                resolve(new Player(result.name, result.team, result.role, result.ign, result.wins, result.losses, result.games));
             });
         });
     }
@@ -100,11 +102,13 @@ class Database {
     addPlayer(player) {
         const name = player.getName();
         const team = player.getTeam();
+        const role = player.getRole();
+        const ign = player.getIGN();
         const wins = player.getWins();
         const losses = player.getLosses();
         const games = player.getGames();
 
-        this.connection.query(`INSERT INTO playerTable (name, team, wins, losses, games) VALUES ('${name}', '${team}', ${wins}, ${losses}, ${games})`, (error, results) => {
+        this.connection.query(`INSERT INTO playerTable (name, team, role, ign, wins, losses, games) VALUES ('${name}', '${team}', '${role}', '${ign}', ${wins}, ${losses}, ${games})`, (error, results) => {
             if (error) throw error;
             console.log(results);
         });
@@ -118,11 +122,13 @@ class Database {
     updatePlayer(player, old) {
         const name = player.getName();
         const team = player.getTeam();
+        const role = player.getRole();
+        const ign = player.getIGN();
         const wins = player.getWins();
         const losses = player.getLosses();
         const games = player.getGames();
 
-        this.connection.query(`UPDATE playerTable SET name = '${name}', team = '${team}', wins = ${wins}, losses = ${losses}, games = ${games} WHERE name = '${old}'`, (error, results) => {
+        this.connection.query(`UPDATE playerTable SET name = '${name}', team = '${team}', role = '${role}', ign = '${ign}', wins = ${wins}, losses = ${losses}, games = ${games} WHERE name = '${old}'`, (error, results) => {
             if (error) throw error;
             console.log(results);
         });

@@ -1,7 +1,9 @@
 class Player {
-    constructor(name, team, wins=0, losses=0, games=0) {
+    constructor(name, team, role, ign="none", wins=0, losses=0, games=0) {
         this.name = name; // Gamer name
         this.team = team;
+        this.role = role; // {Top, Jungle, Mid, ADC, Support}
+        this.ign = ign; // In game name
         this.wins = wins;
         this.losses = losses;
         this.games = games;
@@ -19,6 +21,20 @@ class Player {
      */
     getTeam() {
         return this.team;
+    }
+
+    /**
+     * @returns {String} the role of the player
+     */
+    getRole() {
+        return this.role;
+    }
+
+    /**
+     * @returns {String} the ign of the player
+     */
+    getIGN() {
+        return this.ign;
     }
 
     /**
@@ -63,7 +79,7 @@ class Player {
      * @returns {Number} the win rate of the player
      */
     getWinRate() {
-        return (this.games === 0) ? 0 : this.wins / (this.games);
+        return (this.games === 0) ? 0 : (this.wins / (this.games)) * 100;
     }
 
     /**
@@ -83,10 +99,26 @@ class Player {
     }
 
     /**
+     * Set the role of the player
+     * @param {String} role the new role of the player
+     */
+    setRole(role) {
+        this.role = role;
+    }
+
+    /**
+     * Set the ign of the player
+     * @param {String} ign the new ign of the player
+     */
+    setIGN(ign) {
+        this.ign = ign;
+    }
+
+    /**
      * @returns {String} the player's toString
      */
     toString() {
-        return `${this.name} from ${this.team} has ${this.games} games. Win rate: ${this.getWinRate()}%`;
+        return `${this.team} ${this.name} (${this.ign}) has ${this.games} games. Win rate: ${this.getWinRate()}%`;
     }
 }
 
