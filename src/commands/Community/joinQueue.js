@@ -5,7 +5,7 @@ const db = new Database();
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('queue')
+    .setName('join_queue')
     .setDescription('Join the queue for a game'),
     async execute(interaction, client) {
         // get the guild display name of the user
@@ -22,12 +22,15 @@ module.exports = {
 
         const queue = require('../../objects/queue.js');
         // check if the player is already in the queue
+        let isInQueue = false;
         queue.forEach((p) => {
             if (p.name === player.name) {
                 interaction.reply({ content: `You are already in the queue`, ephemeral: true });
-                return;
+                isInQueue = true;
             }
         });
+
+        if (isInQueue) return;
 
         // add the player in the end of the queue
         queue.push(player);
