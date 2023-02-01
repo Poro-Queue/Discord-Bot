@@ -5,7 +5,7 @@ const db = new Database();
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('update')
+    .setName('update_player')
     .setDescription('Get the players in the database')
     .addStringOption(option =>
         option.setName('name')
@@ -13,13 +13,23 @@ module.exports = {
         .setRequired(true)
     )
     .addStringOption(option =>
+        option.setName('new_team')
+        .setDescription('Change the team of the player')
+        .setRequired(false)
+    )
+    .addStringOption(option =>
         option.setName('new_name')
         .setDescription('Change the name of the player')
         .setRequired(false)
     )
     .addStringOption(option =>
-        option.setName('new_team')
-        .setDescription('Change the team of the player')
+        option.setName('new_role')
+        .setDescription('Change the role of the player')
+        .setRequired(false)
+    )
+    .addStringOption(option =>
+        option.setName('new_ign')
+        .setDescription('Change the in-game name of the player')
         .setRequired(false)
     ),
     async execute(interaction, client) {
@@ -29,7 +39,10 @@ module.exports = {
         let newName = interaction.options.getString('new_name');
         // get the new team of the player
         let newTeam = interaction.options.getString('new_team');
-
+        // get the new role of the player
+        let newRole = interaction.options.getString('new_role');
+        // get the new ign of the player
+        let newIgn = interaction.options.getString('new_ign');
 
         // get the player from the database
         let player = await db.getPlayer(name);
@@ -38,19 +51,38 @@ module.exports = {
             return;
         }
 
+        let changeFlag = false;
         if (newName !== null && newName !== name) {
             // TODO: check if the name dont have any weird characters
             player.setName(newName); // Update the player name
+            changeFlag = true;
         }
 
         if (newTeam !== null && newTeam !== player.getTeam()) {
             player.setTeam(newTeam); // Update the player team
+            changeFlag = true;
         }
 
-        console.log(player.toString()); // works!!
+        if (newRole !== null && newRole !== player.getRole()) {
+            player.setRole(newRole); // Update the player role
+            changeFlag = true;
+        }
 
-        db.updatePlayer(player, name); // Update the player in the database
+        if (newIgn !== null && newIgn !== player.getIGN()) {
+            player.setIGN(newIgn); // Update the player ign
+            changeFlag = true;
+        }
 
+        // console.log(player.toString()); // works!!
+
+        if (!changeFlag) {
+            interaction.reply('No changes were made');
+            return;
+        }
+
+        // Update player
+        db.updatePlayer(player, name);
+        
         // Update the players file
         const players = require('../../objects/players.js');
 
