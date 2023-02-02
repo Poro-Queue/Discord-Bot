@@ -6,7 +6,7 @@ module.exports = {
 
         // check if player is registered
 
-        const players = require('../objects/players.js');
+        const players = require('../../objects/players.js');
         let player = null;
 
         players.forEach((p) => {
@@ -18,7 +18,7 @@ module.exports = {
             return;
         }
 
-        const queue = require('../objects/queue.js');
+        const queue = require('../../objects/queue.js');
         // check if the player is already in the queue
         let isInQueue = false;
         queue.forEach((p) => {
