@@ -1,5 +1,5 @@
 class Player {
-    constructor(name, team, role, ign="none", wins=0, losses=0, games=0) {
+    constructor(name, team, role, ign, wins=0, losses=0, games=0) {
         this.name = name; // Gamer name
         this.team = team;
         this.role = role; // {Top, Jungle, Mid, ADC, Support}
@@ -118,7 +118,7 @@ class Player {
      * @returns {String} the player's toString
      */
     toString() {
-        return `${this.team} ${this.name} (${this.ign}) has ${this.games} games. Win rate: ${this.getWinRate()}%`;
+        return `${this.team} ${this.name} (${this.ign} - ${this.role}) has ${this.games} games. Win rate: ${this.getWinRate()}%`;
     }
 }
 
