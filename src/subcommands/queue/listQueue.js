@@ -1,6 +1,6 @@
 module.exports = {
     async execute(interaction, client) {
-        const queue = require('../../objects/queue.js');
+        const queue = require('../../misc/queue.js');
         
         if (queue.length === 0) {
             await interaction.reply({ content: "**The queue is empty**", ephemeral: true });
@@ -9,7 +9,7 @@ module.exports = {
 
         let queueString = 'On queue:\n';
         queue.forEach((p) => {
-            queueString += `- ${p.team} ${p.name} (${p.ign})\n`;
+            queueString += `- ${p.team} ${p.name} (${p.ign}) - ${p.role}\n`;
         });
 
         await interaction.reply({ content: "```\n" + queueString + "\n```", ephemeral: true });

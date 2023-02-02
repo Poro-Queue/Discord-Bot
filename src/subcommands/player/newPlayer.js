@@ -17,10 +17,10 @@ module.exports = {
         db.addPlayer(player);
         
         // Update the players file
-        const players = require('../../objects/players.js');
+        const players = require('../../misc/players.js');
         players.push(player);
         const fs = require('fs');
-        fs.writeFileSync('./src/objects/players.js', `module.exports = ${JSON.stringify(players)}`);
+        fs.writeFileSync('./src/misc/players.js', `module.exports = ${JSON.stringify(players)}`);
 
         // Send a message to the user
         await interaction.reply({content: player.toString(), ephemeral: true});

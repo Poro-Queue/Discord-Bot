@@ -1,3 +1,5 @@
+const { checkQueue, generateGame } = require('../game.js');
+
 module.exports = {
     async execute(interaction, client) {
         // get the guild display name of the user
@@ -6,7 +8,7 @@ module.exports = {
 
         // check if player is registered
 
-        const players = require('../../objects/players.js');
+        const players = require('../../misc/players.js');
         let player = null;
 
         players.forEach((p) => {
@@ -18,7 +20,7 @@ module.exports = {
             return;
         }
 
-        const queue = require('../../objects/queue.js');
+        const queue = require('../../misc/queue.js');
         // check if the player is already in the queue
         let isInQueue = false;
         queue.forEach((p) => {
@@ -30,13 +32,16 @@ module.exports = {
 
         if (isInQueue) return;
 
+        // TODO: Fix this (not getting added in the end of the queue)
+
         // add the player in the end of the queue
         queue.push(player);
         const fs = require('fs');
-        fs.writeFileSync('./src/objects/queue.js', `module.exports = ${JSON.stringify(queue)}`);
+        fs.writeFileSync('./src/misc/queue.js', `module.exports = ${JSON.stringify(queue)}`);
+
+        if (checkQueue()) generateGame();
+        else console.log('Not enough players to start a game');
 
         await interaction.reply({ content: `You have joined the queue`, ephemeral: true });
-
-        // TODO: now that the one more player has joined the queue, check if there are enough players to start a game
     }
 }

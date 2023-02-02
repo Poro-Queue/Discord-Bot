@@ -12,7 +12,7 @@ module.exports = {
 
         let playersMessage = "Players:\n";
         
-        const players = require('../../objects/players.js');
+        const players = require('../../misc/players.js');
         players.forEach((player) => {
             let p = new Player(player.name, player.team, player.role, player.ign, player.wins, player.losses, player.games);
             playersMessage += `- ${p.getTeam()} ${p.getName()}\n`;

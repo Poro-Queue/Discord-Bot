@@ -56,7 +56,7 @@ module.exports = {
         db.updatePlayer(player, name);
         
         // Update the players file
-        const players = require('../../objects/players.js');
+        const players = require('../../misc/players.js');
 
         players.forEach((p, index) => {
             if (p.name === name) {
@@ -65,7 +65,7 @@ module.exports = {
         });
 
         const fs = require('fs');
-        fs.writeFileSync('./src/objects/players.js', `module.exports = ${JSON.stringify(players)}`);
+        fs.writeFileSync('./src/misc/players.js', `module.exports = ${JSON.stringify(players)}`);
 
         // Reply to the user
         interaction.reply({ content: 'Player updated.', ephemeral: true});

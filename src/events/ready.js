@@ -13,7 +13,7 @@ module.exports = {
 
         // Update the players file
         const fs = require('fs');
-        fs.writeFileSync('./src/objects/players.js', `module.exports = ${JSON.stringify(players)}`);
+        fs.writeFileSync('./src/misc/players.js', `module.exports = ${JSON.stringify(players)}`);
 
         async function pickPresence () {
             const option = Math.floor(Math.random() * statusArray.length);

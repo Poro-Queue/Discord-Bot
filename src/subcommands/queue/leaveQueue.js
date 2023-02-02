@@ -6,14 +6,14 @@ module.exports = {
 
         // check if player is registered
 
-        const players = require('../../objects/players.js');
+        const players = require('../../misc/players.js');
         let player = null;
 
         players.forEach((p) => {
             if (p.name === username) player = p;
         });
 
-        const queue = require('../../objects/queue.js');
+        const queue = require('../../misc/queue.js');
         // check if the player is already in the queue
         let isInQueue = false;
         queue.forEach((p) => {
@@ -29,7 +29,7 @@ module.exports = {
         queue.splice(queue.indexOf(player), 1);
 
         const fs = require('fs');
-        fs.writeFileSync('./src/objects/queue.js', `module.exports = ${JSON.stringify(queue)}`);
+        fs.writeFileSync('./src/misc/queue.js', `module.exports = ${JSON.stringify(queue)}`);
 
         await interaction.reply({ content: `You have left the queue`, ephemeral: true });
     }
