@@ -2,7 +2,7 @@ const mysql = require('mysql2');
 
 require('dotenv').config();
 
-const Player = require('./Player');
+const Player = require('./PlayerObject');
 
 // Create a object to manage the database
 class Database {

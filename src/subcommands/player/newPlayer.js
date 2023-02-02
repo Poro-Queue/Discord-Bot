@@ -1,4 +1,4 @@
-const Player = require('../../objects/Player.js');
+const Player = require('../../objects/PlayerObject.js');
 
 const Database = require('../../objects/Database.js');
 const db = new Database();
