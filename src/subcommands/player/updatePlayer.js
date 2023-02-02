@@ -4,34 +4,6 @@ const Database = require('../../objects/Database.js');
 const db = new Database();
 
 module.exports = {
-    data: new SlashCommandBuilder()
-    .setName('update_player')
-    .setDescription('Get the players in the database')
-    .addStringOption(option =>
-        option.setName('name')
-        .setDescription('Get the player with the name')
-        .setRequired(true)
-    )
-    .addStringOption(option =>
-        option.setName('new_team')
-        .setDescription('Change the team of the player')
-        .setRequired(false)
-    )
-    .addStringOption(option =>
-        option.setName('new_name')
-        .setDescription('Change the name of the player')
-        .setRequired(false)
-    )
-    .addStringOption(option =>
-        option.setName('new_role')
-        .setDescription('Change the role of the player')
-        .setRequired(false)
-    )
-    .addStringOption(option =>
-        option.setName('new_ign')
-        .setDescription('Change the in-game name of the player')
-        .setRequired(false)
-    ),
     async execute(interaction, client) {
         // get the name of the player
         let name = interaction.options.getString('name');
@@ -47,7 +19,7 @@ module.exports = {
         // get the player from the database
         let player = await db.getPlayer(name);
         if (player === null) {
-            interaction.reply('Player not found');
+            interaction.reply({content: 'Player not found', ephemeral: true});
             return;
         }
 
@@ -76,7 +48,7 @@ module.exports = {
         // console.log(player.toString()); // works!!
 
         if (!changeFlag) {
-            interaction.reply('No changes were made');
+            interaction.reply({content: 'No changes were made', ephemeral: true});
             return;
         }
 
@@ -96,6 +68,6 @@ module.exports = {
         fs.writeFileSync('./src/objects/players.js', `module.exports = ${JSON.stringify(players)}`);
 
         // Reply to the user
-        interaction.reply('Player updated ' + player.getName());
+        interaction.reply({ content: 'Player updated.', ephemeral: true});
     }
 }
