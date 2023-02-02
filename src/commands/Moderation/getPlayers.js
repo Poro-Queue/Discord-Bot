@@ -5,9 +5,10 @@ const Player = require('../../objects/Player.js');
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('players')
-    .setDescription('Get all registered players'),
+    .setDescription('Get all registered players')
+    .setDMPermission(false), // this command can only be used in a server
     async execute(interaction, client) {
-        await interaction.reply("Getting players...");
+        await interaction.reply({content: "Getting players...", ephemeral: true});
 
         let playersMessage = "Players:\n";
         
@@ -21,6 +22,6 @@ module.exports = {
             playersMessage = "There are no players registered";
         }
 
-        await interaction.editReply(playersMessage);
+        await interaction.editReply({content: playersMessage, ephemeral: true});
     }
 }
