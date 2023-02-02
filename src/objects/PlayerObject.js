@@ -1,9 +1,18 @@
 class Player {
+    /**
+     * @param {String} name the name of the player
+     * @param {String} team the team of the player
+     * @param {String} role the role of the player
+     * @param {String} ign the in game name of the player
+     * @param {Number} wins the wins of the player
+     * @param {Number} losses the losses of the player
+     * @param {Number} games the games of the player
+     */
     constructor(name, team, role, ign, wins=0, losses=0, games=0) {
-        this.name = name; // Gamer name
+        this.name = name;
         this.team = team;
         this.role = role; // {Top, Jungle, Mid, ADC, Support}
-        this.ign = ign; // In game name
+        this.ign = ign;
         this.wins = wins;
         this.losses = losses;
         this.games = games;
