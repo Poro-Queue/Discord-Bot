@@ -1,4 +1,4 @@
-
+const Game = require('../misc/game.js');
 let players = {Top: [null, null], Jungle: [null, null], Mid: [null, null], ADC: [null, null], Support: [null, null]};
 
 /**
@@ -40,10 +40,9 @@ function generateGame() {
     fs.writeFileSync('./src/misc/queue.js', `module.exports = ${JSON.stringify(queue)}`);
 
     // TODO: Generate a game here
-    // - Create a new Team object
-    // - Create a new Game object, with the two teams (red and blue)
     // - Create a new permission to the game channel
     // - Create a new channel for the game
+    // - Have a list of all games being played
 }
 
 
