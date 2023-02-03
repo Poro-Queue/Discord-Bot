@@ -23,11 +23,11 @@ class Team {
     }
 
     /**
-     * Sets the players of the team
-     * @param {Array} players the players of the team
+     * Add a player to the team
+     * @param {Player} player the player to add to the team
      */
-    setPlayers(players) {
-        this.players = players;
+    addPlayer(player) {
+        this.players.push(player);
     }
 }
 
