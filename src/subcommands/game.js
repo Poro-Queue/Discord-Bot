@@ -1,4 +1,3 @@
-const Game = require('../misc/game.js');
 let players = {Top: [null, null], Jungle: [null, null], Mid: [null, null], ADC: [null, null], Support: [null, null]};
 
 /**
@@ -34,14 +33,14 @@ function generateGame() {
     
     queue = updatedQueue;
 
+    // players is an {Top: [null, null], Jungle: [null, null], Mid: [null, null], ADC: [null, null], Support: [null, null]} object
+
     // TODO: Might have to look into this again, queue might not be sorted correctly
     // Write the updated queue to the file
     const fs = require('fs');
     fs.writeFileSync('./src/misc/queue.js', `module.exports = ${JSON.stringify(queue)}`);
 
     // TODO: Generate a game here
-    // - Create a new permission to the game channel
-    // - Create a new channel for the game
     // - Have a list of all games being played
 }
 
