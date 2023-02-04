@@ -11,6 +11,8 @@ module.exports = class Game {
         this._players = players;
         this._blue = new Team(true);
         this._red = new Team(false);
+        
+        this.delete = [];
 
         /* Functions */
         this.assignPlayers();
@@ -69,10 +71,6 @@ module.exports = class Game {
      * @param {Guild} guild the guild the game is being played in
      */
     async startGame(guild) {
-        // TODO: LIST OF THINGS TO DO
-        // - Create a game channel (one for each team) in that category
-        // - Create a game voice channel (one for each team) in that category
-        
         // Create a game group channel
         const category = await createCategory(guild, this.id);
         
@@ -80,19 +78,33 @@ module.exports = class Game {
         const blueRole = await createRole(guild, `Blue#${this.id}`, '#0000FF');
         const redRole = await createRole(guild, `Red#${this.id}`, '#FF0000');
 
+        // Create a general game channel
+        const generalChannel = await createChannel(guild, 'Lobby', category, true);
+        allowRole(blueRole, generalChannel);
+        allowRole(redRole, generalChannel);
+
+        // Create a game channel and voice channel for Blue team
+        const blueChannel = await createChannel(guild, 'blue', category, false);
+        allowRole(blueRole, blueChannel);
+        
+        // Create a game channel and voice channel for Red team
+        const redChannel = await createChannel(guild, 'red', category, false);
+        allowRole(redRole, redChannel);
+        
         // Give the players a role to see the game group channel
         givePlayerRole(guild, this.blue.players, blueRole);
         givePlayerRole(guild, this.red.players, redRole);
-
-        // Allow the roles to see the specific category
-        allowRole(blueRole, category);
-        allowRole(redRole, category);
+        
+        this.delete.push(category, generalChannel, blueChannel, redChannel, blueRole, redRole);
     }
 
     endGame() {
+        // Delete all the channels and roles
+        this.delete.forEach(element => {
+            element.delete();
+        });
+
         // TODO: LIST OF THINGS TO DO
-        // - Delete the game group channel
-        // - Delete all the permissions
         // - Remove this game from the games array
     }
 }
@@ -116,9 +128,35 @@ const createCategory = async (guild, id) => {
 const createRole = async (guild, name, color) => {
     const role = await guild.roles.create({
         name,
-        color
+        color,
+        permissionOverwrites: [
+            {
+                id: guild.roles.everyone, 
+                deny: [
+                    PermissionsBitField.Flags.ViewChannel,
+                    PermissionsBitField.Flags.Connect,
+                ]
+            },
+        ]
     })
     return role;
+}
+
+/**
+ * Function to create a channel
+ * @param {Guild} guild
+ * @param {String} name - the name of the channel
+ * @param {CategoryChannel} category - the category the channel is in
+ * @param {Boolean} toggle - true if the channel is a game channel, false if it is a voice channel
+ */
+const createChannel = async (guild, name, category, toggle) => {
+    const type = toggle ? ChannelType.GuildText : ChannelType.GuildVoice;
+    const channel = await guild.channels.create({
+        name,
+        type,
+        parent: category,
+    });
+    return channel;
 }
 
 // Function to give the players a role to see the game group channel
@@ -134,5 +172,5 @@ const givePlayerRole = (guild, teamPlayers, role) => {
 
 // Function to allow a role to see a category
 const allowRole = async (role, category) => {
-    await category.permissionOverwrites.edit(role.id, { ViewChannel : true })
+    await category.permissionOverwrites.edit(role.id, { ViewChannel : true, Connect: true })
 }
