@@ -1,4 +1,4 @@
-class Player {
+module.exports = class Player {
     /**
      * @param {String} name the name of the player
      * @param {String} team the team of the player
@@ -130,5 +130,3 @@ class Player {
         return `${this.team} ${this.name} (${this.ign} - ${this.role}) has ${this.games} games. Win rate: ${this.getWinRate()}%`;
     }
 }
-
-module.exports = Player;

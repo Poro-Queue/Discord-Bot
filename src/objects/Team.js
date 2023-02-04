@@ -1,11 +1,11 @@
-class Team {
+module.exports = class Team {
     /**
      * @param {boolean} side true if the team is blue, false if the team is red
      * @param {Array} players the players of the team
      */
     constructor(side) {
-        this.side = side;
-        this.players = [];
+        this._side = side;
+        this._players = [];
     }
 
     /**
@@ -18,8 +18,8 @@ class Team {
     /**
      * @returns {Array} the players of the team
      */
-    getTeamPlayers() {
-        return this.players;
+    get players() {
+        return this._players;
     }
 
     /**
@@ -27,8 +27,6 @@ class Team {
      * @param {Player} player the player to add to the team
      */
     addPlayer(player) {
-        this.players.push(player);
+        this._players.push(player);
     }
 }
-
-module.exports = Team;

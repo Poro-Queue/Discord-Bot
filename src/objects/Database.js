@@ -1,11 +1,9 @@
 const mysql = require('mysql2');
-
 require('dotenv').config();
-
 const Player = require('./PlayerObject');
 
 // Create a object to manage the database
-class Database {
+module.exports = class Database {
     constructor() {
         this.connection = mysql.createConnection({
             host: process.env.DB_HOST,
@@ -134,5 +132,3 @@ class Database {
         });
     }
 }
-
-module.exports = Database;
