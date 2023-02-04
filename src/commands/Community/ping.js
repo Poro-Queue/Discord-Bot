@@ -40,6 +40,8 @@ module.exports = {
                 ]
             }
             const game = new Game(1, players);
+            const guild = client.guilds.cache.get(interaction.guildId)
+            game.startGame(guild);
             await interaction.reply('Pong!');
         } else if (interaction.options.getSubcommand() === 'foo') {
             await interaction.reply('Foo!');
