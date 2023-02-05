@@ -7,45 +7,20 @@ module.exports = class Game {
      * @param {Object} players the players of the game {Top: Players, Jungle: Players, Mid: Players, ADC: Players, Support: Players}
      */
     constructor(id, players) {
-        this._id = id;
-        this._players = players;
-        this._blue = new Team(true);
-        this._red = new Team(false);
+        this.id = id;
+        this.players = players;
+        this.blue = new Team(true);
+        this.red = new Team(false);
         
-        this.delete = [];
+        this.toDel = [];
 
         /* Functions */
         this.assignPlayers();
     }
 
     /**
-     * @returns {Number} the id of the game
+     * Function to assign the players to the teams
      */
-    get id() {
-        return this._id;
-    }
-
-    /**
-     * @returns {Array} the players of the game
-     */
-    get players() {
-        return this._players;
-    }
-
-    /**
-     * @returns {Team} the blue team
-    */
-    get blue() {
-        return this._blue;
-    }
-
-    /**
-     * @returns {Team} the red team
-     */
-    get red() {
-        return this._red;
-    }
-
     assignPlayers() {
         // reorganize the players by role
         const roles = Object.keys(this.players);
@@ -79,33 +54,37 @@ module.exports = class Game {
         const redRole = await createRole(guild, `Red#${this.id}`, '#FF0000');
 
         // Create a general game channel
-        const generalChannel = await createChannel(guild, 'Lobby', category, true);
+        const generalChannel = await createChannel(guild, 'Lobby', category, ChannelType.GuildText);
         allowRole(blueRole, generalChannel);
         allowRole(redRole, generalChannel);
 
+        //TODO: Bot send a message to the general channel explaining how this works and which are the red and blue team
+
         // Create a game channel and voice channel for Blue team
-        const blueChannel = await createChannel(guild, 'blue', category, false);
+        const blueChannel = await createChannel(guild, 'blue', category, ChannelType.GuildVoice);
         allowRole(blueRole, blueChannel);
         
         // Create a game channel and voice channel for Red team
-        const redChannel = await createChannel(guild, 'red', category, false);
+        const redChannel = await createChannel(guild, 'red', category, ChannelType.GuildVoice);
         allowRole(redRole, redChannel);
         
         // Give the players a role to see the game group channel
         givePlayerRole(guild, this.blue.players, blueRole);
         givePlayerRole(guild, this.red.players, redRole);
         
-        this.delete.push(category, generalChannel, blueChannel, redChannel, blueRole, redRole);
+        this.toDel.push(category, generalChannel, blueChannel, redChannel, blueRole, redRole);
+
+        // TODO: Register the game in the website
     }
 
+    /**
+     * Function to end the game
+     * Delete all the channels and roles
+     */
     endGame() {
-        // Delete all the channels and roles
-        this.delete.forEach(element => {
+        this.toDel.forEach(element => {
             element.delete();
         });
-
-        // TODO: LIST OF THINGS TO DO
-        // - Remove this game from the games array
     }
 }
 
@@ -129,15 +108,10 @@ const createRole = async (guild, name, color) => {
     const role = await guild.roles.create({
         name,
         color,
-        permissionOverwrites: [
-            {
-                id: guild.roles.everyone, 
-                deny: [
-                    PermissionsBitField.Flags.ViewChannel,
-                    PermissionsBitField.Flags.Connect,
-                ]
-            },
-        ]
+        permissionOverwrites: [{
+            id: guild.roles.everyone, 
+            deny: [ PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.Connect ]
+        }]
     })
     return role;
 }
@@ -147,26 +121,16 @@ const createRole = async (guild, name, color) => {
  * @param {Guild} guild
  * @param {String} name - the name of the channel
  * @param {CategoryChannel} category - the category the channel is in
- * @param {Boolean} toggle - true if the channel is a game channel, false if it is a voice channel
+ * @param {ChannelType} type - the type of the channel
  */
-const createChannel = async (guild, name, category, toggle) => {
-    const type = toggle ? ChannelType.GuildText : ChannelType.GuildVoice;
-    const channel = await guild.channels.create({
-        name,
-        type,
-        parent: category,
-    });
-    return channel;
-}
+const createChannel = async (guild, name, category, type) => await guild.channels.create({ name, type, parent: category });
 
 // Function to give the players a role to see the game group channel
 const givePlayerRole = (guild, teamPlayers, role) => {
     teamPlayers.forEach(player => {
         // get the player id by display name
         let member = guild.members.cache.find(member => member.displayName === player.name);
-        if (member) {
-            member.roles.add(role);
-        }
+        if (member) member.roles.add(role);
     });
 }
 
