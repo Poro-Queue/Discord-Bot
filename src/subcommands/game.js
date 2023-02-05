@@ -1,5 +1,9 @@
 let players = {Top: [null, null], Jungle: [null, null], Mid: [null, null], ADC: [null, null], Support: [null, null]};
 
+const Game = require('../objects/Game.js');
+
+const games = [];
+
 /**
  * Function to check if there are 2 players of each role in the queue
  * @returns {Boolean} true if there are 2 players of each role in the queue
@@ -21,8 +25,9 @@ function checkQueue() {
 
 /**
  * Function to generate a game
+ * @param {Guild} guild the guild to generate the game in
  */
-function generateGame() {
+function generateGame(guild) {
     // Get the queue
     let queue = require('../misc/queue.js');
     // Remove the players from the queue
@@ -40,8 +45,14 @@ function generateGame() {
     const fs = require('fs');
     fs.writeFileSync('./src/misc/queue.js', `module.exports = ${JSON.stringify(queue)}`);
 
-    // TODO: Generate a game here
-    // - Have a list of all games being played
+    // Start the game
+    let id;
+    do { // generate a random id 0000-9999 with 4 digits
+        id = Math.floor(Math.random() * 10000);
+    } while (games.find(game => game.id == id) != null);
+    games.push(new Game(id, players));
+
+    games[games.length - 1].startGame(guild);
 }
 
 
