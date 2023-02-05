@@ -39,7 +39,8 @@ module.exports = {
         const fs = require('fs');
         fs.writeFileSync('./src/misc/queue.js', `module.exports = ${JSON.stringify(queue)}`);
 
-        if (checkQueue()) generateGame();
+        const guild = client.guilds.cache.get(interaction.guildId)
+        if (checkQueue()) generateGame(guild);
         else console.log('Not enough players to start a game');
 
         await interaction.reply({ content: `You have joined the queue`, ephemeral: true });
