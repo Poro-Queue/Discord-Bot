@@ -4,8 +4,8 @@ module.exports = class Team {
      * @param {Array} players the players of the team
      */
     constructor(side) {
-        this._side = side;
-        this._players = [];
+        this.side = side;
+        this.players = [];
     }
 
     /**
@@ -16,17 +16,10 @@ module.exports = class Team {
     }
 
     /**
-     * @returns {Array} the players of the team
-     */
-    get players() {
-        return this._players;
-    }
-
-    /**
      * Add a player to the team
      * @param {Player} player the player to add to the team
      */
     addPlayer(player) {
-        this._players.push(player);
+        this.players.push(player);
     }
 }
