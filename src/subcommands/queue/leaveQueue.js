@@ -6,14 +6,14 @@ module.exports = {
 
         // check if player is registered
 
-        const players = require('../../misc/players.js');
-        let player = null;
+        let players = require('../../misc/players.js');
 
-        players.forEach((p) => {
+        let player = null;
+        players.forEach((p) => { // this will get the player object from the players array
             if (p.name === username) player = p;
         });
 
-        const queue = require('../../misc/queue.js');
+        let queue = require('../../misc/queue.js');
         // check if the player is already in the queue
         let isInQueue = false;
         queue.forEach((p) => {
@@ -26,7 +26,7 @@ module.exports = {
         }
 
         // remove the player from the queue
-        queue.splice(queue.indexOf(player), 1);
+        queue = queue.filter(p => p.name !== player.name);
 
         const fs = require('fs');
         fs.writeFileSync('./src/misc/queue.js', `module.exports = ${JSON.stringify(queue)}`);
