@@ -1,4 +1,5 @@
 const { checkQueue, generateGame } = require('../game.js');
+const { addPlayerToQueue, getPlayers, getQueue } = require('../../objects/Data.js');
 
 module.exports = {
     async execute(interaction, client) {
@@ -8,7 +9,7 @@ module.exports = {
 
         // check if player is registered
 
-        const players = require('../../misc/players.js');
+        const players = getPlayers();
         let player = null;
 
         players.forEach((p) => {
@@ -20,7 +21,8 @@ module.exports = {
             return;
         }
 
-        const queue = require('../../misc/queue.js');
+        const queue = getQueue();
+        
         // check if the player is already in the queue
         let isInQueue = false;
         queue.forEach((p) => {
@@ -35,9 +37,7 @@ module.exports = {
         // TODO: Fix this (not getting added in the end of the queue)
 
         // add the player in the end of the queue
-        queue.push(player);
-        const fs = require('fs');
-        fs.writeFileSync('./src/misc/queue.js', `module.exports = ${JSON.stringify(queue)}`);
+        addPlayerToQueue(player);
 
         const guild = client.guilds.cache.get(interaction.guildId)
         if (checkQueue()) generateGame(guild);

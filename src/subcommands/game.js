@@ -1,8 +1,8 @@
 let players = {Top: [null, null], Jungle: [null, null], Mid: [null, null], ADC: [null, null], Support: [null, null]};
 
 const Game = require('../objects/Game.js');
+const { getQueue, updateQueue, getGames, addGame } = require('../objects/Data.js'); 
 
-const games = [];
 
 /**
  * Function to check if there are 2 players of each role in the queue
@@ -10,7 +10,7 @@ const games = [];
  */
 function checkQueue() {
     // get the queue
-    const queue = require('../misc/queue.js');
+    const queue = getQueue();
     
     // Go through the queue and check if there are 2 players of each role
     queue.forEach((p) => {
@@ -29,31 +29,27 @@ function checkQueue() {
  */
 function generateGame(guild) {
     // Get the queue
-    let queue = require('../misc/queue.js');
+    let queue = getQueue();
     // Remove the players from the queue
     let updatedQueue = queue.filter(player => { // filter out the players that are in the game
         let roleArray = Object.values(players).flat();
         return !roleArray.includes(player);
     });
     
-    queue = updatedQueue;
-
+    updateQueue(updatedQueue);
+    
     // players is an {Top: [null, null], Jungle: [null, null], Mid: [null, null], ADC: [null, null], Support: [null, null]} object
-
-    // TODO: Might have to look into this again, queue might not be sorted correctly
-    // Write the updated queue to the file
-    const fs = require('fs');
-    fs.writeFileSync('./src/misc/queue.js', `module.exports = ${JSON.stringify(queue)}`);
-
     // Start the game
+    let games = getGames();
     let id;
     do { // generate a random id 0000-9999 with 4 digits
         id = Math.floor(Math.random() * 10000);
     } while (games.find(game => game.id == id) != null);
-    games.push(new Game(id, players));
+    
+    addGame(new Game(id, players));
+    games = getGames();
 
     games[games.length - 1].startGame(guild);
 }
-
 
 module.exports = { checkQueue, generateGame };

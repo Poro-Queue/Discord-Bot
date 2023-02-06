@@ -1,5 +1,3 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 const Database = require('../../objects/Database.js');
 const db = new Database();
 

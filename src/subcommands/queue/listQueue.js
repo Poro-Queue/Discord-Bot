@@ -1,6 +1,8 @@
+const { getQueue } = require("../../objects/Data");
+
 module.exports = {
     async execute(interaction, client) {
-        const queue = require('../../misc/queue.js');
+        const queue = getQueue();
         
         if (queue.length === 0) {
             await interaction.reply({ content: "**The queue is empty**", ephemeral: true });

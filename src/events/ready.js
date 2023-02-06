@@ -2,19 +2,13 @@ const Database = require('../objects/Database');
 const db = new Database();
 db.connect();
 
+const Data = require('../objects/Data.js');
+
 module.exports = {
     name: 'ready',
     once: true,
     async execute(client) {
         console.log('Action!');
-
-        // Get the players from the database
-        const players = await db.getPlayers();
-
-        // Update the players file
-        const fs = require('fs');
-        fs.writeFileSync('./src/misc/players.js', `module.exports = ${JSON.stringify(players)}`);
-
         async function pickPresence () {
             const option = Math.floor(Math.random() * statusArray.length);
 
