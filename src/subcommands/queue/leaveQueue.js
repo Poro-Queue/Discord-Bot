@@ -1,3 +1,5 @@
+const { updateQueue, getQueue, getPlayers } = require('../../objects/Data.js');
+
 module.exports = {
     async execute(interaction, client) {
         // get the guild display name of the user
@@ -5,15 +7,14 @@ module.exports = {
         const username = interaction.guild.members.cache.get(userId).displayName;
 
         // check if player is registered
-
-        let players = require('../../misc/players.js');
+        const players = getPlayers();
 
         let player = null;
         players.forEach((p) => { // this will get the player object from the players array
             if (p.name === username) player = p;
         });
 
-        let queue = require('../../misc/queue.js');
+        const queue = getQueue();
         // check if the player is already in the queue
         let isInQueue = false;
         queue.forEach((p) => {
@@ -26,10 +27,8 @@ module.exports = {
         }
 
         // remove the player from the queue
-        queue = queue.filter(p => p.name !== player.name);
-
-        const fs = require('fs');
-        fs.writeFileSync('./src/misc/queue.js', `module.exports = ${JSON.stringify(queue)}`);
+        let newQueue = queue.filter(p => p.name !== player.name);
+        updateQueue(newQueue);
 
         await interaction.reply({ content: `You have left the queue`, ephemeral: true });
     }
