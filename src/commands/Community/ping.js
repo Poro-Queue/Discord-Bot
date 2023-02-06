@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 // This is the main command, call a subcommand with /ping <subcommand>
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ping')
@@ -15,7 +14,6 @@ module.exports = {
                 .setName('foo')
                 .setDescription('This is a foo command')),
     async execute(interaction, client) {
-        const guild = client.guilds.cache.get(interaction.guildId)
         if (interaction.options.getSubcommand() === 'pong') {
             await interaction.reply({ content: 'Pong!', ephemeral: true});
         } else if (interaction.options.getSubcommand() === 'foo') {
