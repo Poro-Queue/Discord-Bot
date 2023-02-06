@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
 require('dotenv').config();
-const Player = require('./PlayerObject');
+const Player = require('./Player');
 
 // Create a object to manage the database
 module.exports = class Database {
@@ -60,7 +60,7 @@ module.exports = class Database {
     }
 
     /**
-     * Print all the players in the database
+     * Return an array of players from the database
      * @returns {Promise} - A promise that resolves to an array of players
      */
     async getPlayers() {
