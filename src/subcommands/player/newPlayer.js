@@ -1,6 +1,7 @@
 const Player = require('../../objects/Player.js');
 
 const Database = require('../../objects/Database.js');
+const { addPlayer } = require('../../objects/Data.js');
 const db = new Database();
 
 module.exports = {
@@ -13,14 +14,11 @@ module.exports = {
         if (team === null) team = 'NoTeam';
         const player = new Player(name, team, role, ign); 
         
+        // Update the players file
+        addPlayer(player);
+
         // Add the player to the database
         db.addPlayer(player);
-        
-        // Update the players file
-        const players = require('../../misc/players.js');
-        players.push(player);
-        const fs = require('fs');
-        fs.writeFileSync('./src/misc/players.js', `module.exports = ${JSON.stringify(players)}`);
 
         // Send a message to the user
         await interaction.reply({content: player.toString(), ephemeral: true});

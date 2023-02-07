@@ -1,3 +1,4 @@
+const { updatePlayers } = require('../../objects/Data.js');
 const Database = require('../../objects/Database.js');
 const db = new Database();
 
@@ -52,19 +53,8 @@ module.exports = {
 
         // Update player
         db.updatePlayer(player, name);
+        updatePlayers(); // update the players array
         
-        // Update the players file
-        const players = require('../../misc/players.js');
-
-        players.forEach((p, index) => {
-            if (p.name === name) {
-                players[index] = player;
-            }
-        });
-
-        const fs = require('fs');
-        fs.writeFileSync('./src/misc/players.js', `module.exports = ${JSON.stringify(players)}`);
-
         // Reply to the user
         interaction.reply({ content: 'Player updated.', ephemeral: true});
     }
