@@ -1,14 +1,14 @@
+const { initialize } = require('../objects/Data');
 const Database = require('../objects/Database');
 const db = new Database();
 db.connect();
-
-const Data = require('../objects/Data.js');
 
 module.exports = {
     name: 'ready',
     once: true,
     async execute(client) {
         console.log('Action!');
+        initialize(); // initialize the players array
         async function pickPresence () {
             const option = Math.floor(Math.random() * statusArray.length);
 
