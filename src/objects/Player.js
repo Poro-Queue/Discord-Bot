@@ -7,6 +7,7 @@ module.exports = class Player {
      * @param {Number} wins the wins of the player
      * @param {Number} losses the losses of the player
      * @param {Number} games the games of the player
+     * TODO: think about removing 'team' and 'games' from the constructor and database
      */
     constructor(name, team, role, ign, wins=0, losses=0, games=0) {
         this.name = name;

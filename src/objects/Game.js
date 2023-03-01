@@ -30,6 +30,7 @@ module.exports = class Game {
             this.red.addPlayer(this.players[role][Number(result)]);
         });
 
+        // Debug
         console.log('\n');
         this.blue.players.forEach(player => {
             process.stdout.write(player.name + ", ");
