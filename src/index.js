@@ -18,3 +18,29 @@ const commandFolders = fs.readdirSync("./src/commands");
     client.handleCommands(commandFolders, "./src/commands");
     client.login(process.env.TOKEN);
 })();
+
+/* Database */
+const { initialize } = require('./objects/Data');
+const Database = require('./objects/Database');
+const db = new Database();
+db.connect();
+initialize(); // initialize the players array
+
+/* API */
+const express = require('express');
+const app = express();
+const routes = require('./routes');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// routes
+app.use('/api', routes);
+
+app.listen(3000, () => {
+    console.log('API Server running on port 3000');
+});
