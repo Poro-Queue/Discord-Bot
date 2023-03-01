@@ -25,6 +25,7 @@ module.exports = class Database {
             console.log('Connected as id ' + this.connection.threadId);
         });
 
+        //TODO: Remove `games` column from the database (it's a duplicate of `wins` + `losses`)
         const query = `CREATE TABLE IF NOT EXISTS playerTable (
             name VARCHAR(255) NOT NULL PRIMARY KEY,
             team VARCHAR(255) NOT NULL,
@@ -107,7 +108,10 @@ module.exports = class Database {
         const games = player.getGames();
 
         this.connection.query(`INSERT INTO playerTable (name, team, role, ign, wins, losses, games) VALUES ('${name}', '${team}', '${role}', '${ign}', ${wins}, ${losses}, ${games})`, (error, results) => {
-            if (error) throw error;
+            if (error) {
+                if (error.code === 'ER_DUP_ENTRY') return; // Ignore duplicate entries
+                throw error;
+            }
             console.log(results);
         });
     }
